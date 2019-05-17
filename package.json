@@ -1,0 +1,26 @@
+{
+  "name": "stamp-card-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "server": "nodemon server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jarrensj/stamp-card-backend.git"
+  },
+  "author": "Jarren San Jose",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jarrensj/stamp-card-backend/issues"
+  },
+  "homepage": "https://github.com/jarrensj/stamp-card-backend#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.0"
+  }
+}
