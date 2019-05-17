@@ -7,6 +7,7 @@ const { check, validationResult } = require('express-validator/check');
 const auth = require('../../middleware/auth');
 
 const User = require('../../models/User');
+const StampCard = require('../../models/StampCard');
 
 // @route     POST api/user
 // @desc      Register user
@@ -48,6 +49,15 @@ router.post('/', [
     user.password = await bcrypt.hash(password, salt);
 
     await user.save();
+
+    // Create stamp card
+    stampCard = new StampCard({
+      user: user._id,
+      points: 0,
+      careerPoints: 0, 
+      rewards: []
+    })
+    await stampCard.save();
 
     const payload = {
       user: {
