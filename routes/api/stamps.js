@@ -29,7 +29,7 @@ router.get('/me', auth, async (req, res) => {
   }
 });
 
-// @route    PUT api/stamps/record 
+// @route    PUT api/stamps 
 // @desc     Put stamp(s) on stamp card 
 // @access   Private 
 router.put('/', [ 
