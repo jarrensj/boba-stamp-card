@@ -38,8 +38,7 @@ router.put('/', [
     check('email', 'Please include a valid email').isEmail(),
     check('points', 'Please enter the amount of points').not().isEmpty()
   ]
- ], async (req, res) => { 
-  console.log(req.user.id)
+], async (req, res) => { 
   const { points, email } = req.body; 
 
   const admin = await User.findById(req.user.id);
@@ -66,6 +65,10 @@ router.put('/', [
     let updatedStampCard = {};
     updatedStampCard.points = stampCard.points + points;
     updatedStampCard.careerPoints = stampCard.careerPoints + points; 
+    if(updatedStampCard.points / 10 >= 1) {
+      updatedStampCard.rewards = stampCard.rewards + (updatedStampCard.points / 10);
+      updatedStampCard.points = updatedStampCard.points % 10;
+    }
     stampCard = await StampCard.findOneAndUpdate(
       { user: req.user.id },
       { $set: updatedStampCard },

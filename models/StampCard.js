@@ -12,7 +12,7 @@ const StampCard = new mongoose.Schema({
     type: Number
   },
   rewards: {
-    type: [String]
+    type: Number
   }
 });
 
