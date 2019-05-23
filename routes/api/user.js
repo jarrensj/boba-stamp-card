@@ -55,7 +55,7 @@ router.post('/', [
       user: user._id,
       points: 0,
       careerPoints: 0, 
-      rewards: []
+      rewards: 0
     })
     await stampCard.save();
 
