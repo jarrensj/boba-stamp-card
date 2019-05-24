@@ -14,9 +14,9 @@ const Dashboard = ({ getStampcard, auth: { user }, stampcard: { stampcard, loadi
   return loading && stampcard === null ? <Spinner /> : <Fragment>
     <h1 className="large text-primary">Dashboard</h1>
     <p className="lead">
-      <i className="fas fa-user"></i> Hi {user.admin && <Fragment>Admin</Fragment>} {user && user.name}
+      <i className="fas fa-user"></i> Hi {user && user.admin && <Fragment>Admin</Fragment>} {user && user.name}
     </p>
-    {user.admin && 
+    {user && user.admin && 
       <Fragment>
         <AdminDashboardActions />
       </Fragment>
