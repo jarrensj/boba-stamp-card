@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux';
 import Spinner from '../layout/Spinner';
+import AdminDashboardActions from './AdminDashboardActions';
 import { getStampcard } from '../../actions/stampcard'
 
 const Dashboard = ({ getStampcard, auth: { user }, stampcard: { stampcard, loading } }) => {
@@ -17,13 +18,7 @@ const Dashboard = ({ getStampcard, auth: { user }, stampcard: { stampcard, loadi
     </p>
     {user.admin && 
       <Fragment>
-        <h2>Admin Dashboard</h2>
-        <Link to='/admin/add-points' className="btn btn-primary my-1">
-          Add Points
-        </Link>
-        <Link to='/redeem-rewards' className="btn btn-primary my-1">
-          Redeem Rewards
-        </Link>
+        <AdminDashboardActions />
       </Fragment>
     }
     {stampcard != null ? (
