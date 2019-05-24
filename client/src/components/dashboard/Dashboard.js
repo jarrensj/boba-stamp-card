@@ -18,7 +18,7 @@ const Dashboard = ({ getStampcard, auth: { user }, stampcard: { stampcard, loadi
     {user.admin && 
       <Fragment>
         <h2>Admin Dashboard</h2>
-        <Link to='/add-points' className="btn btn-primary my-1">
+        <Link to='/admin/add-points' className="btn btn-primary my-1">
           Add Points
         </Link>
         <Link to='/redeem-rewards' className="btn btn-primary my-1">
