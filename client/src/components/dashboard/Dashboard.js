@@ -13,12 +13,24 @@ const Dashboard = ({ getStampcard, auth: { user }, stampcard: { stampcard, loadi
   return loading && stampcard === null ? <Spinner /> : <Fragment>
     <h1 className="large text-primary">Dashboard</h1>
     <p className="lead">
-      <i className="fas fa-user"></i> Hi {user && user.name}
+      <i className="fas fa-user"></i> Hi {user.admin && <Fragment>Admin</Fragment>} {user && user.name}
     </p>
+    {user.admin && 
+      <Fragment>
+        <h2>Admin Dashboard</h2>
+        <Link to='/add-points' className="btn btn-primary my-1">
+          Add Points
+        </Link>
+        <Link to='/redeem-rewards' className="btn btn-primary my-1">
+          Redeem Rewards
+        </Link>
+      </Fragment>
+    }
     {stampcard != null ? (
       <Fragment>
-        You have {stampcard.points} points right now and {stampcard.rewards} rewards currently available. <br />
-        Just give your email address and you'll get your points with your purchase.
+        <h2>Account Dashboard</h2>
+        <h3>You have {stampcard.points} points right now and {stampcard.rewards} rewards currently available. </h3>
+        Just give your email address to get your points with your purchase or to redeem rewards. <br />
       </Fragment>
     ) : (
       <Fragment>
