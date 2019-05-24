@@ -73,7 +73,7 @@ router.put('/', [
         stampCard.points = stampCard.points % 10;
       }
       stampCard = await StampCard.findOneAndUpdate(
-        { user: req.user.id },
+        { user: user._id },
         { $set: stampCard },
         { new: true }
       );
