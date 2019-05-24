@@ -93,34 +93,64 @@ router.put('/', [
 // @route    PUT api/stamps/redeem
 // @desc     Redeem a reward  
 // @access   Private 
-router.put('/redeem', auth, async (req, res) => {
+router.put('/redeem', [ 
+  auth,
+  [
+    check('email', 'Please include a valid email').isEmail(),
+    check('rewards', 'Please enter the amount of rewards to redeem').not().isEmpty()
+  ]
+], async (req, res) => { 
   try {
-    const user = await User.findById(req.user.id);
-    if (!user) {
+    let { rewards, email } = req.body; 
+
+    if(rewards || !rewards) {
+      return res.status(400).json({ msg: 'Please enter a value greater than 0' });
+    }
+
+    const admin = await User.findById(req.user.id);
+  
+    if (!admin) {
       return res.status(400).json({ msg: 'This user does not exist' });
     }
   
-    let stampCard = await StampCard.findOne({ user: user._id });
-    if(!stampCard) {
-      return res.status(400).json({ msg: 'There is no stamp card for this user '});
-    }
+    // check if admin 
+    if(admin.admin) {
+      // find user to give points to
+      const user = await User.findOne({ email });
+      if (!user) {
+       return res.status(400).json({ msg: 'This user does not exist' });
+      }
   
-    // check if they have a reward 
-    if(stampCard.rewards > 0) {
-      // redeem the reward 
-  
-      stampCard = await StampCard.findOneAndUpdate( 
-        { user: req.user.id },
-        { $inc: { rewards: -1 } },
-        { new: true }
-      );
+      // get user's stamp card 
+      let stampCard = await StampCard.findOne({ user: user._id });
+      if(!stampCard) {
+        return res.status(400).json({ msg: 'There is no stamp card found for this email' });
+      }
       
-      // return updated stamp card
-      res.json(stampCard);
-    }
-    else {
-      return res.status(400).json({ msg: 'You do not have any rewards to redeem'});
-    }
+      rewards = parseInt(rewards, 10);
+
+      // check if they have enough rewards for the amount of the rewards they would like to redeem
+      if(stampCard.rewards >= rewards) {
+        // redeem the reward 
+        stampCard.rewards = stampCard.rewards - rewards;
+
+        stampCard = await StampCard.findOneAndUpdate(
+          { user: user._id },
+          { $set: stampCard },
+          { new: true }
+        );
+        
+        // return updated stamp card
+        res.json(stampCard);
+      } 
+      else {
+        return res.status(400).json({ msg: 'They do not have enough rewards balance' });
+      }
+
+    } else {
+      // Doesn't have permission
+      return res.status(400).json({ msg: 'You do not have permission.' });
+    } 
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
