@@ -7,7 +7,8 @@ import {
   AUTH_ERROR,
   LOGIN_SUCCESS,
   LOGIN_FAIL,
-  LOGOUT
+  LOGOUT,
+  CLEAR_STAMPCARD
 } from './types';
 
 import setAuthToken from '../utils/setAuthToken';
@@ -96,5 +97,6 @@ export const login = ( email, password ) => async dispatch => {
 
 // Logout 
 export const logout = () => dispatch => new Promise(function(resolve, reject) {
+  dispatch({ type: CLEAR_STAMPCARD });
   dispatch({ type: LOGOUT });
 });

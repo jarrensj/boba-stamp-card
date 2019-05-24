@@ -1,11 +1,11 @@
 import {
     GET_STAMPCARD,
-    STAMPCARD_ERROR
+    STAMPCARD_ERROR,
+    CLEAR_STAMPCARD
   } from '../actions/types';
   
   const initialState = {
     stampcard: null,
-    repos: [],
     loading: true,
     error: {}
   }
@@ -24,6 +24,12 @@ import {
         return {
           ...state,
           error: payload,
+          loading: false
+        }
+      case CLEAR_STAMPCARD:
+        return {
+          ...state, 
+          stampcard: null,
           loading: false
         }
       default:

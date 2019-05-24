@@ -8,4 +8,5 @@ export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAIL = 'LOGIN_FAIL';
 export const LOGOUT = 'LOGOUT';
 export const GET_STAMPCARD = 'GET_STAMPCARD';
-export const STAMPCARD_ERROR = 'STAMPCARD_ERROR'
+export const STAMPCARD_ERROR = 'STAMPCARD_ERROR';
+export const CLEAR_STAMPCARD = 'CLEAR_STAMPCARD';
