@@ -40,7 +40,7 @@ router.put('/', [
   ]
 ], async (req, res) => { 
   try {
-    const { points, email } = req.body; 
+    let { points, email } = req.body; 
 
     const admin = await User.findById(req.user.id);
   
@@ -62,17 +62,19 @@ router.put('/', [
         return res.status(400).json({ msg: 'There is no stamp card found for this email' });
       }
       
-      // update their stamp card 
-      let updatedStampCard = {};
-      updatedStampCard.points = stampCard.points + points;
-      updatedStampCard.careerPoints = stampCard.careerPoints + points; 
-      if(updatedStampCard.points / 10 >= 1) {
-        updatedStampCard.rewards = stampCard.rewards + (updatedStampCard.points / 10);
-        updatedStampCard.points = updatedStampCard.points % 10;
+      // convert string to int
+
+      points = parseInt(points, 10);
+
+      stampCard.points = stampCard.points + points;
+      stampCard.careerPoints = stampCard.careerPoints + points; 
+      if(stampCard.points / 10 >= 1) {
+        stampCard.rewards = stampCard.rewards + Math.floor(stampCard.points / 10);
+        stampCard.points = stampCard.points % 10;
       }
       stampCard = await StampCard.findOneAndUpdate(
         { user: req.user.id },
-        { $set: updatedStampCard },
+        { $set: stampCard },
         { new: true }
       );
       

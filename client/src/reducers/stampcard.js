@@ -1,7 +1,8 @@
 import {
     GET_STAMPCARD,
     STAMPCARD_ERROR,
-    CLEAR_STAMPCARD
+    CLEAR_STAMPCARD,
+    UPDATE_STAMPCARD
   } from '../actions/types';
   
   const initialState = {
@@ -15,6 +16,7 @@ import {
   
     switch(type) {
       case GET_STAMPCARD:
+      case UPDATE_STAMPCARD:
         return {
           ...state,
           stampcard: payload,
