@@ -7,7 +7,7 @@ const DashboardActions = () => {
       <Link to='/admin/add-points' className="btn btn-primary my-1">
         Add Points
       </Link>
-      <Link to='/redeem-rewards' className="btn btn-primary my-1">
+      <Link to='/admin/redeem-rewards' className="btn btn-primary my-1">
         Redeem Rewards
       </Link>
     </div>

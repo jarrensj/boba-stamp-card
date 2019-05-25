@@ -9,6 +9,7 @@ import Dashboard from './components/dashboard/Dashboard';
 import PrivateRoute from './components/routing/PrivateRoute';
 import AdminRoute from './components/routing/AdminRoute';
 import AddPoints from './components/admin/AddPoints';
+import RedeemRewards from './components/admin/RedeemRewards';
 // Redux
 import { Provider } from 'react-redux';
 import store from './store';
@@ -39,6 +40,7 @@ const App = () => {
               <Route exact path="/login" component={Login} />
               <PrivateRoute exact path="/dashboard" component={Dashboard} />
               <AdminRoute exact path="/admin/add-points" component={AddPoints} />
+              <AdminRoute exact path="/admin/redeem-rewards" component={RedeemRewards} />
             </Switch>
           </section>
         </Fragment>

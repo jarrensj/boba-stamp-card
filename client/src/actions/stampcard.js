@@ -49,6 +49,40 @@ export const addPoints = (formData, history) => async dispatch => {
     if(errors) {
       errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
     }
+    console.log(err);
+
+    dispatch({
+      type: STAMPCARD_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+}
+
+// redeem rewards on a user's stamp card
+export const redeemRewards = (formData, history) => async dispatch => {
+  try {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+
+    const res = await axios.put('/api/stamps/redeem', formData, config);
+
+    dispatch({
+      type: UPDATE_STAMPCARD,
+      payload: res.data
+    });
+
+    dispatch(setAlert('Rewards Redeemed', 'success'));
+
+    history.push('/dashboard');
+  } catch (err) {
+    const errors = err.response.data.errors;
+
+    if(errors) {
+      errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
+    }
 
     dispatch({
       type: STAMPCARD_ERROR,

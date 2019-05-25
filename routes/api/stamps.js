@@ -20,7 +20,7 @@ router.get('/me', auth, async (req, res) => {
     const stampCard = await StampCard.findOne({ user: req.user.id });
 
     if (!stampCard) {
-      return res.status(400).json({ msg: 'There is no stamp card for this user' });
+      return res.status(400).json({ errors: [{ msg: 'There is no stamp card found for this user' }] });
     }
     res.json(stampCard);
   } catch (err) {
@@ -45,7 +45,7 @@ router.put('/', [
     const admin = await User.findById(req.user.id);
   
     if (!admin) {
-      return res.status(400).json({ msg: 'This user does not exist' });
+      return res.status(400).json({ errors: [{ msg: "This user does not exist" }] });
     }
   
     // check if admin 
@@ -53,13 +53,13 @@ router.put('/', [
       // find user to give points to
       const user = await User.findOne({ email });
       if (!user) {
-       return res.status(400).json({ msg: 'This user does not exist' });
+       return res.status(400).json({ errors: [{ msg: "This user does not exist" }] });
       }
-  
+
       // get user's stamp card 
       let stampCard = await StampCard.findOne({ user: user._id });
       if(!stampCard) {
-        return res.status(400).json({ msg: 'There is no stamp card found for this email' });
+        return res.status(400).json({ errors: [{ msg: 'There is no stamp card found for this email' }] });
       }
       
       // convert string to int
@@ -82,7 +82,7 @@ router.put('/', [
       res.json(stampCard); 
     } else {
       // Doesn't have permission
-      return res.status(400).json({ msg: 'You do not have permission.' });
+      return res.status(400).json({ errors: [{ msg: 'You do not have permission' }] });
     } 
   } catch (err) {
     console.error(err.message);
@@ -103,14 +103,14 @@ router.put('/redeem', [
   try {
     let { rewards, email } = req.body; 
 
-    if(rewards || !rewards) {
-      return res.status(400).json({ msg: 'Please enter a value greater than 0' });
+    if(rewards == 0 || !rewards) {
+      return res.status(400).json({ errors: [{ msg: "Please enter a value greater than 0" }] });
     }
 
     const admin = await User.findById(req.user.id);
   
     if (!admin) {
-      return res.status(400).json({ msg: 'This user does not exist' });
+      return res.status(400).json({ errors: [{ msg: "This user does not exist" }] });
     }
   
     // check if admin 
@@ -118,13 +118,13 @@ router.put('/redeem', [
       // find user to give points to
       const user = await User.findOne({ email });
       if (!user) {
-       return res.status(400).json({ msg: 'This user does not exist' });
+        return res.status(400).json({ errors: [{ msg: "This user does not exist" }] });
       }
   
       // get user's stamp card 
       let stampCard = await StampCard.findOne({ user: user._id });
       if(!stampCard) {
-        return res.status(400).json({ msg: 'There is no stamp card found for this email' });
+        return res.status(400).json({ errors: [{ msg: 'There is no stamp card found for this email' }] });
       }
       
       rewards = parseInt(rewards, 10);
@@ -144,12 +144,12 @@ router.put('/redeem', [
         res.json(stampCard);
       } 
       else {
-        return res.status(400).json({ msg: 'They do not have enough rewards balance' });
+        return res.status(400).json({ errors: [{ msg: 'Not enough rewards balance' }] });
       }
 
     } else {
       // Doesn't have permission
-      return res.status(400).json({ msg: 'You do not have permission.' });
+      return res.status(400).json({ errors: [{ msg: 'You do not have permission' }] });
     } 
   } catch (err) {
     console.error(err.message);
