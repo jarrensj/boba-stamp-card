@@ -150,4 +150,48 @@ router.put('/password', [ auth,
   }
 });
 
+// @route     PUT api/user/email
+// @desc      Update user's email 
+// @access    Private
+router.put('/email', [ auth, 
+  [
+    check('email', 'Please include a valid email').isEmail()
+  ]
+], async (req, res) => {
+  const errors = validationResult(req);
+  if(!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  try {
+    let user = await User.findById(req.user.id);
+    
+    if (!user) {
+      return res
+      .status(400)
+      .json({ errors: [{ msg: 'User not found' }] });
+    }
+
+
+    let { email } = req.body;
+
+    let check = await User.findOne({ email });
+
+    if(check) {
+      return res.status(400).json({errors: [{ msg: 'That email is already in use' }] });
+    }
+    user = await User.findOneAndUpdate(
+      { _id: req.user.id },
+      { $set: { email } },
+      { new: true }
+    ).select('-password, -admin');
+
+    res.json(user)
+
+  } catch(err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+});
+
 module.exports = router;
