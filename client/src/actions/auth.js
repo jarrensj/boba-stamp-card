@@ -8,7 +8,9 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT,
-  CLEAR_STAMPCARD
+  CLEAR_STAMPCARD,
+  UPDATE_AUTH,
+  USER_ERROR
 } from './types';
 
 import setAuthToken from '../utils/setAuthToken';
@@ -100,3 +102,39 @@ export const logout = () => dispatch => new Promise(function(resolve, reject) {
   dispatch({ type: CLEAR_STAMPCARD });
   dispatch({ type: LOGOUT });
 });
+
+// change user's email
+export const changeEmail = ( formData, history ) => async dispatch => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }
+
+  const body = JSON.stringify(formData);
+
+  try {
+    const res = await axios.put('/api/user/email', body, config);
+
+    dispatch({
+      type: UPDATE_AUTH,
+      payload: res.data
+    });
+
+    dispatch(setAlert('Email address updated', 'success'));
+
+    dispatch(loadUser());
+    history.push('/dashboard');
+
+  } catch (err) {
+    console.log(err);
+    const errors = err.response.data.errors;
+
+    if(errors) {
+      errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
+    }
+    dispatch({
+      type: USER_ERROR
+    });
+  }
+}
