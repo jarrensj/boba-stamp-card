@@ -12,6 +12,8 @@ import AddPoints from './components/admin/AddPoints';
 import RedeemRewards from './components/admin/RedeemRewards';
 import Account from './components/account/Account';
 import ChangeEmail from './components/account/ChangeEmail';
+import ChangePassword from './components/account/ChangePassword';
+
 // Redux
 import { Provider } from 'react-redux';
 import store from './store';
@@ -44,6 +46,7 @@ const App = () => {
               <AdminRoute exact path="/admin/add-points" component={AddPoints} />
               <AdminRoute exact path="/admin/redeem-rewards" component={RedeemRewards} />
               <PrivateRoute exact path="/change-email" component={ChangeEmail} />
+              <PrivateRoute exact path="/change-password" component={ChangePassword} />
               <PrivateRoute exact path="/account" component={Account} />
             </Switch>
           </section>
